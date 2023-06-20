@@ -1,11 +1,7 @@
 MicroPython AXP202 Library
 ===========================
 
-micropython modules for XPowers PMU, The following IC models are supported:
-
-- AXP202
-- AXP192(planning)
-- AXP2101(planning)
+micropython modules for XPowers AXP202.
 
 Get Started
 ------------
