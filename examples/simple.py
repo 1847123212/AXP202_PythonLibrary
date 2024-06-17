@@ -27,22 +27,37 @@ github:https://github.com/lewisxhe/AXP202X_Libraries
 '''
 import axp202
 import time
+from machine import I2C
+from machine import Pin
 
+'''
+t-watch 2020 v3
+    scl: 22
+    sda: 21
+    intr: 35
+'''
 
-a = axp202.PMU()
-a.setChgLEDMode(axp202.AXP20X_LED_BLINK_1HZ)
-a.enablePower(axp202.AXP202_LDO2)
-a.setLDO2Voltage(1800)
-a.enableADC(axp202.AXP202_ADC1, axp202.AXP202_VBUS_VOL_ADC1)
-a.enableADC(axp202.AXP202_ADC1, axp202.AXP202_VBUS_CUR_ADC1)
-a.enableADC(axp202.AXP202_ADC1, axp202.AXP202_BATT_VOL_ADC1)
-a.enableADC(axp202.AXP202_ADC1, axp202.AXP202_BATT_CUR_ADC1)
+i2c0 = I2C(0, scl=Pin(22), sda=Pin(21))
+a = axp202.AXP202(i2c0)
+# a.setChgLEDMode(axp202.AXP20X_LED_BLINK_1HZ)
+# a.enablePower(axp202.AXP202_LDO2)
+# a.setLDO2Voltage(1800)
+
+a.enableADC(1, 3)
+a.enableADC(1, 2)
+a.enableADC(1, 7)
+a.enableADC(1, 6)
 
 
 while True:
-    voltage = a.getVbusVoltage()
-    current = a.getVbusCurrent()
-    battCurrent = a.getBattChargeCurrent()
-    perce = a.getBattPercentage()
-    print("isChargeing: V: %f C:%f  BC:%f  perce:%d" % (voltage, current, battCurrent,perce))
+    # battCurrent = a.getBattChargeCurrent()
+    # perce = a.getBattPercentage()
+    print("VBUS:")
+    print("  voltage: %fmv" % a.vbus_voltage)
+    print("  current: %fma" % a.vbus_current)
+
+    print("Battery")
+    print("  voltage: %fmv" % a.battery_voltage)
+    print("  current: %fma" % a.battery_current)
+    print("  charge current: %fma" % a.battery_charge_current)
     time.sleep(1)
